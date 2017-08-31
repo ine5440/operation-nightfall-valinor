@@ -48,7 +48,7 @@ def tuner(options, input_size, num_trials):
             best_runtime = elapsed_time
             best_combination = combination
 
-    print("esse manja: %s" % best_combination)
+    print("Compilation completed. Best combination: %s" % list(filter(None, best_combination)))
     devnull.close()
 
 if __name__ == "__main__":
@@ -63,6 +63,6 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         input_size = sys.argv[1]
     else:
-        input_size = "9"
+        input_size = "8"
 
     tuner(options, input_size, 3) # go auto-tuner
