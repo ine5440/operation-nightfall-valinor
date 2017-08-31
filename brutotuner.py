@@ -10,8 +10,8 @@ import os
 from functools import reduce
 
 def tuner(options, input_size, num_trials):
-    exec_file = 'matmult'
-    compilation_line = ['gcc','-o',exec_file,'mm.c']
+    exec_file = "matmult"
+    compilation_line = ["gcc","-o",exec_file,"mm.c"]
 
     best_runtime = float("inf")
     best_combination = None
@@ -21,7 +21,7 @@ def tuner(options, input_size, num_trials):
     all_combinations = list(itertools.product(*options))
     for i, combination in enumerate(all_combinations):
         combination = list(combination)
-        combination[0] = '-DSTEP=%d' % combination[0]
+        combination[0] = "-DSTEP=%d" % combination[0]
         filtered_combination = list(filter(None, combination))
 
         # Compile code
@@ -35,7 +35,7 @@ def tuner(options, input_size, num_trials):
         for trial in range(num_trials):
             # Run code
             t_begin = time.time() # timed run
-            run_trial = subprocess.run(['./'+exec_file, input_size], stdout=devnull)
+            run_trial = subprocess.run(["./"+exec_file, input_size], stdout=devnull)
             t_end = time.time()
             if run_trial.returncode != 0:
                 print("Sad execution")
@@ -53,11 +53,11 @@ def tuner(options, input_size, num_trials):
 
 if __name__ == "__main__":
     options = [
-        [16, 32, 64, 128], # possible step values
-        ['-funroll-loops', ''],
-        ['-march=native', ''],
-        ['-mfpmath=sse', ''],
-        ['-O3', '-Ofast', '-O2', ''],
+        [8, 16, 32, 64], # possible step values
+        ["-funroll-loops", "-funroll-all-loops", ""],
+        ["-march=native", ""],
+        ["-mfpmath=sse", ""],
+        ["-O3", "-Ofast", "-O2"],
     ]
 
     if len(sys.argv) > 1:
@@ -65,4 +65,4 @@ if __name__ == "__main__":
     else:
         input_size = "8"
 
-    tuner(options, input_size, 3) # go auto-tuner
+    tuner(options, input_size, 30) # go auto-tuner
